@@ -6,7 +6,7 @@
 
 let lcd = null; // displayen
 
-let memory = 0; // Lagrat/gamlat värdet från display
+let memory = ""; // Lagrat/gamlat värdet från display
 let arithmetic = null; // Vilken beräkning som skall göras +,-, x eller /
 
 function init() {
@@ -25,23 +25,51 @@ function buttonClick(e) {
     // kollar om siffertangent är nedtryckt
     if (btn.substring(0, 1) === 'b') {
         let digit = btn.substring(1, 2); // plockar ut siffran från id:et
+        memory += digit;
 
-    } else { // Inte en siffertangent, övriga tangenter.
-
+    }else if (btn == 'sub'){
+        memory += "-";
     }
+
+    else if (btn == 'add'){
+        memory += "+";
+
+    } else if (btn == 'div'){
+        memory += "/";
+    }
+
+    else if (btn == 'mul'){
+        memory += "*";
+    }
+
+    else if(btn == 'comma'){
+        addComma();
+    }
+
+    else if (btn == 'enter') {
+        calculate();
+    }
+
+    else if (btn == 'clear') {
+        memClear();
+        clearLCD();
+    } 
+    addDigit();
 }
 
 /**
  *  Lägger till siffra på display.
  */
 function addDigit(digit) {
+    document.getElementById("lcd").value = memory;
+
 }
 
 /**
  * Lägger till decimaltecken
  */
 function addComma() {
-
+    memory += ".";
 }
 
 /**
@@ -56,7 +84,8 @@ function setOperator(operator){
  * Beräknar ovh visar resultatet på displayen.
  */
 function calculate() {
-
+    memory = eval(memory)
+        document.getElementById("lcd").value = memory;
 }
 
 /** Rensar display */
@@ -67,7 +96,8 @@ function clearLCD() {
 
 /** Rensar allt, reset */
 function memClear(){
-    memory = 0;
+    memory = "";
+
     arithmetic = null;
     clearLCD();
 }
